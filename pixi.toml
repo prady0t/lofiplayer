@@ -1,0 +1,12 @@
+[workspace]
+authors = ["Pradyot Ranjan <99216956+pradyotRanjan@users.noreply.github.com>"]
+channels = ["conda-forge"]
+name = "test-terminal-playback"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+python = ">=3.14.4,<3.15"
+opencv = ">=4.13.0,<5"
