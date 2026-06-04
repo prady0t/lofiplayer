@@ -7,7 +7,7 @@ ASCII = np.array(list(
 ))
 # ASCII = np.array(list(" ▏▎▍▌▋▊▉█")) # better
 # ASCII = np.array(list(ASCII))
-# ASCII = " .'`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$"
+# ASCII = np.array(list(" .'`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$"))
 
 def frame_to_ascii_color_fast(frame, width):
     h, w, _ = frame.shape

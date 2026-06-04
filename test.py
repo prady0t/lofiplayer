@@ -3,13 +3,9 @@ import sys
 import time
 import shutil
 import shutil
-import numpy as np
 from lofiplayer.ascii_converter import frame_to_ascii_color_fast
 from lofiplayer.controls import Controls
-import tty
-import termios
-import curses
-
+from lofiplayer.yt import resolve_video_url
 
 def play(video_path):
     PLAY = True
@@ -78,4 +74,8 @@ if __name__ == "__main__":
         print("Usage: python test.py <video>")
     else:
         print("\033[2J")  # clear once
-        play(sys.argv[1])
+        if sys.argv[1].startswith("http"):
+            video_url = resolve_video_url(sys.argv[1])
+            play(video_url)
+        else:
+            play(sys.argv[1])
