@@ -23,7 +23,8 @@ class Controls:
 
         if ch == " ":
             return "SPACE"
-
+        if ch == "s":
+            return "SKIP"
         if ch == "\x1b":
             if sys.stdin.read(1) != "[":
                 return None

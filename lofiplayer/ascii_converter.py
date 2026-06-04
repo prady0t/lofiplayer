@@ -16,12 +16,10 @@ def frame_to_ascii_color_fast(frame, width):
     resized = cv2.resize(frame, (width, height))
 
     # --- vectorized brightness ---
-    gray = (
-        0.2126 * resized[:,:,2] +
-        0.7152 * resized[:,:,1] +
-        0.0722 * resized[:,:,0]
-    ).astype(np.uint8)
-
+    gray = cv2.cvtColor(
+    resized,
+    cv2.COLOR_BGR2GRAY,
+)
     indices = (gray.astype(np.int32) * (len(ASCII)-1)) // 255
     chars = ASCII[indices]
 
@@ -40,21 +38,6 @@ def frame_to_ascii_color_fast(frame, width):
 
     return "\n".join(lines) + "\x1b[0m"
 
-# def frame_to_ascii_fast(frame, width):
-#     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-#     h, w = gray.shape
-#     aspect_ratio = h / w
-#     height = int(aspect_ratio * width * 0.55)
-
-#     resized = cv2.resize(gray, (width, height))
-
-#     # vectorized mapping
-#     indices = (resized.astype(np.int32) * (len(ASCII)-1)) // 255
-#     chars = ASCII[indices]
-
-#     # join rows
-#     return "\n".join("".join(row) for row in chars)
 
 def frame_to_ascii_color(frame, width):
 

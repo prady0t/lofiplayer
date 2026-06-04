@@ -5,7 +5,7 @@ import shutil
 import shutil
 from lofiplayer.ascii_converter import frame_to_ascii_color_fast
 from lofiplayer.controls import Controls
-from lofiplayer.yt import resolve_video_url
+from lofiplayer.yt import resolve_urls
 
 def play(video_path):
     PLAY = True
@@ -47,6 +47,8 @@ def play(video_path):
                 time.sleep(0.1)
                 start_time += time.time() - now  # adjust start time to account for pause
                 continue
+            if key == "SKIP":
+                break
             ret, frame = cap.read()
             if not ret:
                 break
@@ -75,7 +77,8 @@ if __name__ == "__main__":
     else:
         print("\033[2J")  # clear once
         if sys.argv[1].startswith("http"):
-            video_url = resolve_video_url(sys.argv[1])
-            play(video_url)
+            video_urls = resolve_urls(sys.argv[1])
+            for url in video_urls:
+                play(url)
         else:
             play(sys.argv[1])
