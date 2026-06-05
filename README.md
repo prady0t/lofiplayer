@@ -55,10 +55,3 @@ If no URL is provided, a default YouTube video is launched.
 
 <img width="1680" height="841" alt="Screenshot 2026-06-06 at 2 16 21 AM" src="https://github.com/user-attachments/assets/09900137-7402-4c81-98ac-5c7e8e597bb4" />
 
-
-
-
-
-## License
-
-MIT
