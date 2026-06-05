@@ -1,12 +1,7 @@
 # lofiplayer
 
-ASCII-art video player for tmux with YouTube support.
+For all the lofi fans who never want to leave the terminal.
 
-## Features
-
-- Plays videos in terminal using ASCII rendering
-- Supports streaming from YouTube via `yt-dlp`
-- Uses `tmux` sessions for video and low-fi controls
 
 ## Requirements
 
@@ -17,20 +12,16 @@ ASCII-art video player for tmux with YouTube support.
 ## Installation
 
 Make sure [lowfi](https://github.com/talwat/lowfi) and tmux are already installed first.
-```bash
-python -m pip install .
-```
-
-For editable development installs:
 
 ```bash
-python -m pip install -e .[dev]
+pip install lofiplayer
 ```
+
 
 ## Usage
 
 ```bash
-python -m lofiplayer "https://www.youtube.com/watch?v=-FlxM_0S2lA"
+lofiplayer <youtube video link or local video path>
 ```
 
 If no URL is provided, a default YouTube video is launched.
