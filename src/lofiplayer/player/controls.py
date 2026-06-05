@@ -20,7 +20,8 @@ class Controls:
 
         if ch == "q":
             return "QUIT"
-
+        if ch == "n":
+            return "NEXT"
         if ch == " ":
             return "SPACE"
         if ch == "s":

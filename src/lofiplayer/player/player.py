@@ -57,6 +57,8 @@ def play(video_path):
                     ["tmux", "send-keys", "-t", f"{SESSION}:lowfi", "s"],
                     stderr=subprocess.DEVNULL,
                 )
+            if key == "NEXT":
+                break
             ret, frame = cap.read()
             if not ret:
                 break
