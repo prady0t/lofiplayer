@@ -23,7 +23,7 @@ pip install lofiplayer
 ```
 lofiplayer <youtube video link or local video path>
 ```
-
+You can feed in entire YouTube playlist as well. It may take a while to load the videos if playlist is large.
 If no URL is provided, a default YouTube video is launched.
 
 | Key | Function |
