@@ -8,6 +8,7 @@ For all the lofi fans who never want to leave the terminal.
 - `python` 3.10+
 - `tmux`
 - `lowfi` (installed separately, e.g. via Cargo)
+- Not supported on Windows
 
 ## Installation
 
