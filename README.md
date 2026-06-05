@@ -20,7 +20,7 @@ pip install lofiplayer
 
 ## Usage
 
-```bash
+```
 lofiplayer <youtube video link or local video path>
 ```
 
