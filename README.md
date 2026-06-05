@@ -16,6 +16,7 @@ ASCII-art video player for tmux with YouTube support.
 
 ## Installation
 
+Make sure [lowfi](https://github.com/talwat/lowfi) and tmux are already installed first.
 ```bash
 python -m pip install .
 ```
