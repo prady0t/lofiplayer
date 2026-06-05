@@ -1,84 +1,101 @@
-import cv2
+import os
 import sys
-import time
-import shutil
-import shutil
-from player.ascii_converter import frame_to_ascii_color_fast
-from player.controls import Controls
+import subprocess
+from itertools import cycle
+import os
+from player.player import play
 from player.yt import resolve_urls
+import atexit
 
-def play(video_path):
-    PLAY = True
-    PAUSE = False
-    QUIT = False
-    cap = cv2.VideoCapture(video_path)
+SESSION = "lofiplayer"
 
-    fps = cap.get(cv2.CAP_PROP_FPS)
-    if fps <= 0:
-        fps = 24
 
-    TARGET_FPS = 20
+def run_player(video_source):
+    print("\033[2J")
 
-    frame_duration = 1.0 / TARGET_FPS
-    start_time = time.time()
+    if video_source.startswith("http"):
+        playlist = cycle(resolve_urls(video_source))
 
-    print("\033[2J\033[?25l", end="")  # clear + hide cursor
-    frame_index = 0
-    with Controls() as controls:
-        while not QUIT:
-            key = controls.get_key()
-            if key == "QUIT":
-                QUIT = True
-            now = time.time()
-            expected_frame = int((now - start_time) / frame_duration)
+        for url in playlist:
+            sys.stdout.write("\tLoading, Please Wait...\n")
+            sys.stdout.flush()
 
-            MAX_SKIP = 2
+            state = play(url)
 
-            skips = 0
-            while frame_index < expected_frame and skips < MAX_SKIP:
-                if not cap.grab():
-                    break
-                frame_index += 1
-                skips += 1
-            if key == "SPACE":
-                PLAY = not PLAY
-                PAUSE = not PAUSE
-            if PAUSE:
-                time.sleep(0.1)
-                start_time += time.time() - now  # adjust start time to account for pause
-                continue
-            if key == "SKIP":
-                break
-            ret, frame = cap.read()
-            if not ret:
-                break
+            if state == "QUIT":
+                kill_tmux()
+    else:
+        state = play(video_source)
 
-            frame_index += 1
+        if state == "QUIT":
+            kill_tmux()
 
-            # --- dynamic size ---
-            term_cols, term_rows = shutil.get_terminal_size()
-            width = term_cols
 
-            # --- render ---
-            # ascii_frame = frame_to_ascii_color(frame, width)
-            ascii_frame = frame_to_ascii_color_fast(frame, width)
+def launch_tmux(video_source):
+    kill_tmux()
 
-            print("\033[H", end="")
-            print(ascii_frame)
+    subprocess.run(
+        ["tmux", "new-session", "-d", "-s", SESSION, "-n", "video"],
+        check=True,
+    )
 
-            # tiny sleep to avoid maxing CPU
-            time.sleep(0.001)
-    print("\033[?25h", end="")  # restore cursor
-    cap.release()
+    subprocess.run(
+        ["tmux", "set-option", "-g", "status", "off"],
+        check=True,
+    )
+
+    subprocess.run(
+        ["tmux", "new-window", "-t", SESSION, "-n", "lowfi", "lowfi"],
+        check=True,
+    )
+
+    script = os.path.abspath(__file__)
+
+    video_cmd = (
+        f"{sys.executable} '{script}' '{video_source}'"
+    )
+
+    subprocess.run(
+        [
+            "tmux",
+            "send-keys",
+            "-t",
+            f"{SESSION}:video",
+            video_cmd,
+            "C-m",
+        ],
+        check=True,
+    )
+
+    subprocess.run(
+        ["tmux", "select-window", "-t", f"{SESSION}:video"],
+        check=True,
+    )
+
+    subprocess.run(
+        ["tmux", "attach-session", "-t", SESSION],
+        check=True,
+    )
+
+def kill_tmux():
+    subprocess.run(
+        ["tmux", "kill-session", "-t", SESSION],
+        stderr=subprocess.DEVNULL,
+    )
+
+
+atexit.register(kill_tmux)
+
+def launcher(argument):
+    if "TMUX" in os.environ:
+        run_player(argument)
+    else:
+        launch_tmux(argument)
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python test.py <video>")
+        # print("Usage: python main.py <video-or-playlist-url>")
+        # sys.exit(1)
+        launcher("https://www.youtube.com/watch?v=-FlxM_0S2lA")  
     else:
-        print("\033[2J")  # clear once
-        if sys.argv[1].startswith("http"):
-            video_urls = resolve_urls(sys.argv[1])
-            for url in video_urls:
-                play(url)
-        else:
-            play(sys.argv[1])
+        launcher(sys.argv[1])
