@@ -5,14 +5,24 @@
 
 # Python artifacts
 __pycache__/
+*.py[cod]
+*$py.class
 *.egg-info/
+dist/
+build/
 *.pytest_cache/
 .pytest_cache/
 coverage.xml
 htmlcov/
-.pytest_cache
+.pycache__/
 
 # Development environments
 .venv/
 .env
+.python-version
+
+# macOS
 .DS_Store
+
+# VS Code
+.vscode/
