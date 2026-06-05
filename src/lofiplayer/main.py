@@ -1,5 +1,6 @@
 import os
 import sys
+import shutil
 import subprocess
 from itertools import cycle
 import atexit
@@ -81,6 +82,20 @@ def kill_tmux():
     )
 
 
+def check_external_dependencies():
+    missing = [tool for tool in ("tmux", "lowfi") if shutil.which(tool) is None]
+    if missing:
+        sys.stderr.write(
+            "Missing required external dependency: {}\n".format(
+                ", ".join(missing)
+            )
+        )
+        sys.stderr.write(
+            "Please install the missing tools and rerun.\n"
+        )
+        sys.exit(1)
+
+
 atexit.register(kill_tmux)
 
 def launcher(argument):
@@ -93,6 +108,8 @@ def launcher(argument):
 def main(argv=None):
     if argv is None:
         argv = sys.argv
+
+    check_external_dependencies()
 
     if len(argv) < 2:
         launcher("https://www.youtube.com/watch?v=-FlxM_0S2lA")

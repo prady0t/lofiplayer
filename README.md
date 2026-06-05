@@ -8,6 +8,12 @@ ASCII-art video player for tmux with YouTube support.
 - Supports streaming from YouTube via `yt-dlp`
 - Uses `tmux` sessions for video and low-fi controls
 
+## Requirements
+
+- `python` 3.10+
+- `tmux`
+- `lowfi` (installed separately, e.g. via Cargo)
+
 ## Installation
 
 ```bash
