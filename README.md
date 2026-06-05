@@ -35,6 +35,13 @@ python -m lofiplayer "https://www.youtube.com/watch?v=-FlxM_0S2lA"
 
 If no URL is provided, a default YouTube video is launched.
 
+| Key | Function |
+|-----|----------|
+| `s` | Skip Song |
+| `Space` | Play/Pause audio and video |
+| `q`, `CTRL+C` | Quit |
+| `n` | next video |
+
 ## Testing
 
 ```bash
