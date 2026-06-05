@@ -1,7 +1,9 @@
-import yt_dlp
-
-
 def resolve_urls(url):
+    try:
+        import yt_dlp
+    except ImportError as exc:
+        raise RuntimeError("yt-dlp is required to resolve URLs") from exc
+
     ydl_opts = {
         "format": "best",
         "quiet": True,

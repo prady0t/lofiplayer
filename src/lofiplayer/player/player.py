@@ -1,9 +1,9 @@
 import cv2
 import sys
 import time
-from player.ascii_converter import frame_to_ascii_color_fast
-from player.controls import Controls
-from player.window import get_terminal_size
+from .ascii_converter import frame_to_ascii_color_fast
+from .controls import Controls
+from .window import get_terminal_size
 import subprocess
 
 SESSION = "lofiplayer"

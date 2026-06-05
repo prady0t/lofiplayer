@@ -2,10 +2,10 @@ import os
 import sys
 import subprocess
 from itertools import cycle
-import os
-from player.player import play
-from player.yt import resolve_urls
 import atexit
+
+from .player.player import play
+from .player.yt import resolve_urls
 
 SESSION = "lofiplayer"
 
@@ -49,11 +49,7 @@ def launch_tmux(video_source):
         check=True,
     )
 
-    script = os.path.abspath(__file__)
-
-    video_cmd = (
-        f"{sys.executable} '{script}' '{video_source}'"
-    )
+    video_cmd = f"{sys.executable} -m lofiplayer '{video_source}'"
 
     subprocess.run(
         [
@@ -77,6 +73,7 @@ def launch_tmux(video_source):
         check=True,
     )
 
+
 def kill_tmux():
     subprocess.run(
         ["tmux", "kill-session", "-t", SESSION],
@@ -92,10 +89,16 @@ def launcher(argument):
     else:
         launch_tmux(argument)
 
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        # print("Usage: python main.py <video-or-playlist-url>")
-        # sys.exit(1)
-        launcher("https://www.youtube.com/watch?v=-FlxM_0S2lA")  
+
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv
+
+    if len(argv) < 2:
+        launcher("https://www.youtube.com/watch?v=-FlxM_0S2lA")
     else:
-        launcher(sys.argv[1])
+        launcher(argv[1])
+
+
+if __name__ == "__main__":
+    main()
